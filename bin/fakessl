@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+$:.unshift File.join(File.dirname(File.dirname(__FILE__)), 'lib')
+
+require 'fakessl'
+require 'optparse'
+
+class String
+  def is_integer?
+    self.to_i.to_s == self
+  end
+end
+
+options = {}
+
+optparse = OptionParser.new do |opts|
+
+  opts.banner = "Usage: ./fakessl.rb -s HOSTNAME -p PORT"
+  opts.on('-h', '--help', 'Display this menu') do
+    puts opts
+    exit
+  end
+  opts.on('-s', '--server HOSTNAME', 'Server that FakeSSL should impersonate') do |f|
+    options[:server] = f
+  end
+  opts.on('-p', '--port PORT', 'Port that FakeSSL should bind eg. 443') do |f|
+    if f.is_integer?
+      options[:port] = f
+    else
+      puts opts
+      exit
+    end
+  end
+
+end
+
+optparse.parse!
+
+if (!(options[:server].nil?) && !(options[:port].nil?))
+  if Integer(options[:port]) < 1025 
+    raise "Must run as root" unless Process.uid == 0
+  end
+  server = FakeSSL.new(options[:server],options[:port])
+else
+  $stdout.puts "[-] Mandatory Parameter is missing, try ./fakessl.rb -h"
+end
+
