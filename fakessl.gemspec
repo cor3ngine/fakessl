@@ -7,11 +7,11 @@ require File.expand_path('../lib/fakessl/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.name          = "fakessl"
   gem.version       = Fakessl::VERSION
-  gem.authors       = ["Matteo Michelini - cor3ngine"]
+  gem.authors       = ["Matteo Michelini"]
   gem.email         = ["cor3ngine@gmail.com"]
   gem.description   = %q{FakeSSL impersonates an HTTPS server and displays the client requests}
   gem.summary       = %q{FakeSSL impersonates an HTTPS server and displays the client requests}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/cor3ngine/fakessl"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
