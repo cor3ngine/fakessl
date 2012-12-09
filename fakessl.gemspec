@@ -9,8 +9,8 @@ Gem::Specification.new do |gem|
   gem.version       = Fakessl::VERSION
   gem.authors       = ["Matteo Michelini"]
   gem.email         = ["cor3ngine@gmail.com"]
-  gem.description   = %q{FakeSSL impersonates an HTTPS server and displays the client requests}
-  gem.summary       = %q{FakeSSL impersonates an HTTPS server and displays the client requests}
+  gem.description   = %q{FakeSSL impersonates an HTTPS server and prints the client requests}
+  gem.summary       = %q{FakeSSL impersonates an HTTPS server and prints the client requests}
   gem.homepage      = "https://github.com/cor3ngine/fakessl"
 
   gem.files         = `git ls-files`.split($/)

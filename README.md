@@ -1,6 +1,6 @@
 # FakeSSL
 
-FakeSSL impersonates an HTTPS server and displays the client requests.
+FakeSSL impersonates an HTTPS server and prints the client requests.
 
 ## Installation
 
@@ -15,7 +15,18 @@ Or install it as:
 
 ## Usage
 
-    $ fakessl -h
+    $ sudo fakessl -s localhost -p 443
+      Password:
+      [+] Generating fake SSL certificate for localhost
+      Generating a 4096 bit RSA private key
+      ........++
+      ................................................................++
+      writing new private key to 'localhost.key'
+      -----
+      [+] Fake localhost is listening on port 443
+      [+] Client requests are: 
+      => GET /byy.html HTTP/1.1
+
 
 ## Contributing
 
