@@ -1,4 +1,4 @@
-# Fakessl
+# FakeSSL
 
 FakeSSL impersonates an HTTPS server and displays the client requests.
 
