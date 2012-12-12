@@ -5,7 +5,7 @@ class FakeSSL
 
   def initialize(hostname,lport)
     @hostname = hostname
-    @lport = lport
+    @lport = lport.to_i
     $stdout.puts "[+] Generating fake SSL certificate for #{@hostname}"
     generate_certificate
     sslServer = server_setup
@@ -18,7 +18,7 @@ class FakeSSL
   end
 
   def server_setup
-    server = TCPServer.new(@hostname, @lport)
+    server = TCPServer.new('localhost', @lport)
     sslContext = OpenSSL::SSL::SSLContext.new
     #certificate
     sslContext.cert = OpenSSL::X509::Certificate.new(File.open("#{@hostname}.cert"))
