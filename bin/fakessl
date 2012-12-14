@@ -41,6 +41,6 @@ if (!(options[:server].nil?) && !(options[:port].nil?))
   end
   server = FakeSSL.new(options[:server],options[:port])
 else
-  $stdout.puts "[-] Mandatory Parameter is missing, try ./fakessl.rb -h"
+  $stdout.puts "[-] Mandatory Parameter is missing, try fakessl.rb -h"
 end
 
