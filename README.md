@@ -15,25 +15,35 @@ Or install it as:
 
 ## Usage
 
-    $ sudo fakessl -s localhost -p 443
+Generate a certificate:
+
+    $ fakessl -g test.org
+      [+] Generating fake key and certificate for test.org
+
+Use the previous certificate and key to setup a fake HTTPS server on port 443:
+
+    $ sudo fakessl -c test.org.cert -k test.org.key -p 443
       Password:
-      [+] Generating fake SSL certificate for localhost
-      Generating a 4096 bit RSA private key
-      ........++
-      ................................................................++
-      writing new private key to 'localhost.key'
-      -----
-      [+] Fake localhost is listening on port 443
+      [+] Fake test.org is listening on port 443
+      [+] Client requests are: 
+      => GET /advv HTTP/1.1
+
+Single command line to generate certificate and key and setup the HTTPS server:
+    
+    $ sudo fakessl -g test.org -p 443
+      Password:
+      [+] Generating fake key and certificate for test.org
+      [+] Fake test.org is listening on port 443
       [+] Client requests are: 
       => GET /byy.html HTTP/1.1
 
-In case you need to use it with a browser that is checking the authenticity 
-of the certificate you need to import the certificate as trusted.
+In case you need to use it with a browser that checks the authenticity 
+of the certificate you need to import the generated certificate as trusted.
 Firefox example.
 Go to Edit -> Preferences -> Advanced -> View Certificates -> Servers -> Import 
 -> Choose the certificate from your drive after generating it.
-Then click on the certificate and click on the button "Edit Trust..." inside 
-the Firefox window and enable "Trust the authenticity of this certificate"
+Then select the imported certificate and click on the button "Edit Trust...". 
+Inside the Firefox window enable "Trust the authenticity of this certificate"
 
 ## Contributing
 
