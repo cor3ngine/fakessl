@@ -12,6 +12,7 @@ module FakeSSL
   def FakeSSL.cert_path(fcert, fkey)
     FakeSSL.cert = fcert
     FakeSSL.key = fkey
+    FakeSSL.domain = fcert.chomp(".cert")
   end
 
   class Cert
