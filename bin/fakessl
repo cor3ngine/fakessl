@@ -14,13 +14,23 @@ options = {}
 
 optparse = OptionParser.new do |opts|
 
-  opts.banner = "Usage: ./fakessl.rb -s HOSTNAME -p PORT"
+  opts.banner = "Usage: fakessl -g DOMAIN_NAME -p PORT\n" \
+                "Examples:\n" \
+                "1. Only generate fake certificates: fakessl -g test.org\n" \
+                "2. Generate fake certificate and setup server: fakessl -g test.org -p 5000\n" \
+                "3. Setup server using other external certificates: fakessl -c domain.cert -k domain.key -p 5000\n" 
   opts.on('-h', '--help', 'Display this menu') do
     puts opts
     exit
   end
-  opts.on('-s', '--server HOSTNAME', 'Server that FakeSSL should impersonate') do |f|
-    options[:server] = f
+  opts.on('-g', '--generate DOMAIN_NAME', 'FakeSSL certificate generation') do |f|
+    options[:domain] = f
+  end
+  opts.on('-c', '--certificate FILE', 'FakeSSL certificate') do |f|
+    options[:certificate] = f
+  end
+  opts.on('-k', '--key FILE', 'FakeSSL private key') do |f|
+    options[:key] = f
   end
   opts.on('-p', '--port PORT', 'Port that FakeSSL should bind eg. 443') do |f|
     if f.is_integer?
@@ -35,12 +45,23 @@ end
 
 optparse.parse!
 
-if (!(options[:server].nil?) && !(options[:port].nil?))
+if options[:domain] && options[:port].nil?
+  cert = FakeSSL::Cert.new(options[:domain])
+  cert.generate
+
+elsif options[:domain] && options[:port]
+  cert = FakeSSL::Cert.new(options[:domain])
+  cert.generate
+  server = FakeSSL::Server.new(options[:port])
+
+elsif (!(options[:certificate].nil?) && !(options[:key].nil?) && !(options[:port].nil?))
   if Integer(options[:port]) < 1025 
     raise "Must run as root" unless Process.uid == 0
   end
-  server = FakeSSL.new(options[:server],options[:port])
+  cert = FakeSSL::cert_path(options[:certificate],options[:key])
+  server = FakeSSL::Server.new(options[:port])
+
 else
-  $stdout.puts "[-] Mandatory Parameter is missing, try fakessl.rb -h"
+  puts "[-] Mandatory Parameter is missing, try `fakessl -h`"
 end
 
