@@ -21,7 +21,25 @@ module FakeSSL
 
     public
       def generate
-        %x[openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=#{FakeSSL.domain}" -keyout #{FakeSSL.domain}.key  -out #{FakeSSL.domain}.cert]
+        puts "[+] Generating fake key and certificate for #{FakeSSL.domain}"
+        #generate keys
+        key = OpenSSL::PKey::RSA.new 4096
+        open "#{FakeSSL.domain}.key", 'w' do |io| io.write key.to_pem end
+
+        #generate certificate 
+        name = OpenSSL::X509::Name.parse "CN=#{FakeSSL.domain}/DC=server"
+        cert = OpenSSL::X509::Certificate.new
+        cert.version = 2
+        cert.serial = 0
+        cert.not_before = Time.now
+        cert.not_after = Time.now +  ( 3600 * 24 * 365 )
+        cert.public_key = key.public_key
+        cert.subject = name
+
+        #selfsign certificate
+        cert.issuer = name
+        cert.sign key, OpenSSL::Digest::SHA1.new
+        open "#{FakeSSL.domain}.cert", 'w' do |io| io.write cert.to_pem end
       end
   end
 
